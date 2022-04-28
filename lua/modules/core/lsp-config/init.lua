@@ -3,6 +3,7 @@ MAIN.configurations["lsp-config"] = {
   -- server_name: opts (https://github.com/neovim/nvim-lspconfig/blob/master/doc/server_configurations.md)
   lsp_opts = {},
   on_attach_temp = {},
+  updater_capabilities = MAIN.configurations["cmp.cmp-nvim-lsp"].update_capabilities,
   key_mappings_on_attach = {
     ["*"] = {
       ["n"] = {
@@ -70,7 +71,9 @@ MAIN.configurations["lsp-config.installer"] = {
       lsp_installer.on_server_ready(
         function(server)
           local opts = {}
+
           local lsp_config = MAIN.configurations["lsp-config"]
+          opts.capabilities = lsp_config.updater_capabilities(vim.lsp.protocol.make_client_capabilities())
 
           for server_name, server_opts in pairs(lsp_config.lsp_opts) do
             if server_name == server.name then
@@ -84,10 +87,8 @@ MAIN.configurations["lsp-config.installer"] = {
             end
           end
 
-          opts.on_attach = function(client, bufnr)
-            local common_key_mappings_on_attach = lsp_config.key_mappings_on_attach["*"]
-
-            for mode, keymaps in pairs(common_key_mappings_on_attach) do
+          local set_key_mappings_on_attach = function(keymappings, bufnr)
+            for mode, keymaps in pairs(keymappings) do
               MAIN["which-key"].compile_with_options(
                 keymaps,
                 {
@@ -99,6 +100,16 @@ MAIN.configurations["lsp-config.installer"] = {
                 }
               )
             end
+          end
+
+          opts.on_attach = function(client, bufnr)
+            local common_key_mappings_on_attach = lsp_config.key_mappings_on_attach["*"]
+            local key_mappings_based_on_language = lsp_config.key_mappings_on_attach[server.name]
+
+            set_key_mappings_on_attach(
+              vim.tbl_deep_extend("force", common_key_mappings_on_attach, key_mappings_based_on_language),
+              bufnr
+            )
 
             lsp_config.on_attach_temp[server.name](client, bufnr)
           end

@@ -1,3 +1,6 @@
 require "modules.core.cmp"
 require "modules.core.lsp-config"
-require "modules.core.nvim-tree"
+require "modules.core.neo-tree"
+require "modules.core.formatter"
+
+vim.g["mapleader"] = " "

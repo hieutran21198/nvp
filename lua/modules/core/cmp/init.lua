@@ -247,6 +247,7 @@ MAIN.packer.append {
   ["hrsh7th/cmp-nvim-lsp"] = MAIN.configurations["cmp.cmp-nvim-lsp"].packer_module,
   ["hrsh7th/cmp-buffer"] = MAIN.configurations["cmp.cmp-buffer"].packer_module,
   ["hrsh7th/cmp-path"] = MAIN.configurations["cmp.cmp-path"].packer_module,
+  ["github/copilot.vim"] = {},
   ["hrsh7th/cmp-copilot"] = MAIN.configurations["cmp.cmp-copilot"].packer_module,
   ["hrsh7th/cmp-vsnip"] = MAIN.configurations["cmp.cmp-vsnip"].packer_module,
   "hrsh7th/vim-vsnip",
