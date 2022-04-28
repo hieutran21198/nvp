@@ -16,24 +16,6 @@ MAIN.format_on_save = function(fts)
   return c.format_on_save
 end
 
-local tscommon_formatter = {
-  function()
-    return {
-      exe = "prettier",
-      args = {
-        "--stdin-filepath",
-        vim.fn.fnameescape(vim.api.nvim_buf_get_name(0))
-      },
-      stdin = true
-    }
-  end
-}
-for _, v in ipairs({"javascript", "typescript", "typescriptreact", "javascriptreact"}) do
-  MAIN.formatters {
-    [v] = tscommon_formatter
-  }
-end
-
 MAIN.configurations["formatter"] = {
   plugin_setup_params = {},
   formatters = {
@@ -108,7 +90,8 @@ MAIN.configurations["formatter"] = {
     config = function()
       local formatter = require "formatter"
       local fts = MAIN.formatters()
-      MAIN.autocmds.set {
+      local utils = require "common.utils"
+      utils.new_augroups {
         _FormatterAG = {{"BufWritePost", table.concat(MAIN.format_on_save(), ","), "FormatWrite"}}
       }
       formatter.setup {
@@ -117,6 +100,25 @@ MAIN.configurations["formatter"] = {
     end
   }
 }
+
+local tscommon_formatter = {
+  function()
+    return {
+      exe = "prettier",
+      args = {
+        "--stdin-filepath",
+        vim.fn.fnameescape(vim.api.nvim_buf_get_name(0))
+      },
+      stdin = true
+    }
+  end
+}
+for _, v in ipairs({"javascript", "typescript", "typescriptreact", "javascriptreact"}) do
+  MAIN.formatters {
+    [v] = tscommon_formatter
+  }
+end
+
 MAIN.packer.append {
   ["mhartington/formatter.nvim"] = MAIN.configurations["formatter"].packer_module
 }

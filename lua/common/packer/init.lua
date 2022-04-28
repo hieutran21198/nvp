@@ -10,12 +10,13 @@ M.append = function(plugins)
       if type(k) == "number" and type(v) == "string" then
         table.insert(
           M.plugins,
-          {
-            [v] = {}
-          }
+          v
         )
       elseif type(k) == "string" and type(v) == "table" then
-        local plugin = table.insert(v, 0, k)
+        local plugin = {k}
+        for method, value in pairs(v) do
+          plugin[method] = value
+        end
         table.insert(M.plugins, plugin)
       end
     end

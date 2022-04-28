@@ -1,11 +1,14 @@
-provision-common:
-	npm install -g lua-fmt
-save-profile:
-  rm -rf ~/.config/nvim
-  mv ~/.local/share/nvim/ ~/.local/share/nvim.bak
-revert-profile:
-  ln -s ~/proj/vigo ~/.config/nvim
-  mv ~/.local/share/nvim.bak ~/.local/share/nvim
-link-nvp:
-  ln -s (pwd) ~/.config/nvim
-dev: save-profile link-nvp
+provision_common:
+		npm install -g lua-fmt
+save_profile: #
+		rm -rf ${HOME}/.config/nvim
+		mv ${HOME}/.local/share/nvim/ ${HOME}/.local/share/nvim.bak
+revert_profile: #
+		ln -s ${HOME}/proj/vigo ${HOME}/.config/nvim
+		rm -rf ${HOME}/.local/share/nvim
+		mv ${HOME}/.local/share/nvim.bak ${HOME}/.local/share/nvim
+link_nvp: #
+		ln -s $(shell pwd) ${HOME}/.config/nvim
+dev: 
+		save-profile 
+		link-nvp

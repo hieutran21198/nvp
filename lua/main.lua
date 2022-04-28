@@ -135,7 +135,7 @@ local bootstrap_options = {
 MAIN.bootstrap = function(opts)
   local utils = require "common.utils"
 
-  if opts then
+  if opts ~= nil then
     bootstrap_options = vim.tbl_deep_extend("force", bootstrap_options, opts)
   end
 
@@ -144,7 +144,7 @@ MAIN.bootstrap = function(opts)
   require "modules.core"
 
   ---Load user config
-  MAIN.require_user_config(opts)
+  MAIN.require_user_config(bootstrap_options.user_config_filepath)
 
   utils.new_augroups(MAIN.augroups)
   utils.set_options(MAIN.options)
@@ -152,4 +152,6 @@ MAIN.bootstrap = function(opts)
   MAIN.which_key.compile(MAIN.key_mappings)
   ---Load plugins
   MAIN.packer.startup()
+
+  vim.cmd[[ PackerCompile ]]
 end

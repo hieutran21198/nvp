@@ -1,8 +1,8 @@
 MAIN.configurations["neo-tree"] = {
   toggle_neotree = {
     mappings = {
-      ["<leader>e"] = {"<cmd>Neotree<CR>", "Neo-tree"},
-      ["\\"] = {"<cmd>Neotree reveal<CR>", "Neo-tree reveal"}
+      ["<leader>e"] = {"<cmd>NeoTreeFocusToggle<CR>", "Neo-tree"},
+      ["\\"] = {"<cmd>NeoTreeRevealToggle<CR>", "Neo-tree reveal"}
     },
     options = {
       mode = "n",
@@ -79,7 +79,7 @@ MAIN.configurations["neo-tree"] = {
         nowait = true
       },
       mappings = {
-        ["<space>"] = {
+        ["o"] = {
           "toggle_node",
           nowait = false -- disable `nowait` if you have existing combos starting with this char that you want to use
         },
@@ -182,18 +182,10 @@ MAIN.configurations["neo-tree"] = {
       "MunifTanjim/nui.nvim"
     },
     branch = "v2.x",
-    setup = function()
-      local c = MAIN.configurations["neo-tree"]
-      for k, v in pairs(c.g) do
-        if k ~= "neo_tree_remove_legacy_commands" then
-          vim.g[k] = v
-        end
-      end
-    end,
     config = function()
       local c = MAIN.configurations["neo-tree"]
 
-      vim.cmd("let g:neo_tree_remove_legacy_commands = " .. c.g.neo_tree_remove_legacy_commands)
+      vim.cmd([[ let g:neo_tree_remove_legacy_commands = 1 ]])
 
       vim.fn.sign_define("DiagnosticSignError", {text = " ", texthl = "DiagnosticSignError"})
       vim.fn.sign_define("DiagnosticSignWarn", {text = " ", texthl = "DiagnosticSignWarn"})
@@ -201,11 +193,13 @@ MAIN.configurations["neo-tree"] = {
       vim.fn.sign_define("DiagnosticSignHint", {text = " ", texthl = "DiagnosticSignHint"})
 
       local neotree = require "neo-tree"
+      print(vim.inspect(c.plugin_setup_params))
       neotree.setup(c.plugin_setup_params)
 
       local whichkey = require "common.which-key"
       whichkey.compile_with_options(c.toggle_neotree.mappings, c.toggle_neotree.options)
-    end
+    end,
+    disable = false
   }
 }
 

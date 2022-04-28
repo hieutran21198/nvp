@@ -31,11 +31,13 @@ MAIN.configurations["cmp"] = {
     sources = {},
     formatting = {
       -- applied codicons
-      format = function(_, vim_item)
-        local c = MAIN.configurations["cmp"]
-        vim_item.kind = (c.kinds[vim_item.kind] or "") .. vim_item.kind
-        return vim_item
-      end
+      format = {
+        function(_, vim_item)
+          local c = MAIN.configurations["cmp"]
+          vim_item.kind = (c.kinds[vim_item.kind] or "") .. vim_item.kind
+          return vim_item
+        end
+      }
     }
     ---TODO: configure the plugin
   },
@@ -203,7 +205,7 @@ MAIN.configurations["codicons"] = {
       local c = MAIN.configurations["cmp"]
       table.insert(
         c.plugin_setup_params.formatting.format,
-        function(vim_item)
+        function(_, vim_item)
           local co = MAIN.configurations["codicons"]
           local codicon = co.codicon_map[vim_item.kind]
           if codicon then
