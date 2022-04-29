@@ -193,7 +193,6 @@ MAIN.configurations["neo-tree"] = {
       vim.fn.sign_define("DiagnosticSignHint", {text = " ", texthl = "DiagnosticSignHint"})
 
       local neotree = require "neo-tree"
-      print(vim.inspect(c.plugin_setup_params))
       neotree.setup(c.plugin_setup_params)
 
       local whichkey = require "common.which-key"
@@ -204,5 +203,5 @@ MAIN.configurations["neo-tree"] = {
 }
 
 MAIN.packer.append {
-  ["nvim-neo-tree/neo-tree.nvim"] = MAIN.configurations["neo-tree"].packer_module
+  ["nvim-neo-tree/neo-tree.nvim"] = MAIN.must_require("neo-tree","neo-tree").packer_module
 }

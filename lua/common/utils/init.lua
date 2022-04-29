@@ -12,6 +12,13 @@ return {
       handler()
     end
   end,
+  package_already = function(package_name)
+    local ok, _ = pcall(require, package_name)
+    if not ok then
+      return false
+    end
+    return true
+  end,
   ---@param name string
   ---@return boolean
   file_exists = function(name)

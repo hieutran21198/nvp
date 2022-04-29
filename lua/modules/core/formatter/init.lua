@@ -120,5 +120,5 @@ for _, v in ipairs({"javascript", "typescript", "typescriptreact", "javascriptre
 end
 
 MAIN.packer.append {
-  ["mhartington/formatter.nvim"] = MAIN.configurations["formatter"].packer_module
+  ["mhartington/formatter.nvim"] = MAIN.must_require("formatter","formatter").packer_module
 }

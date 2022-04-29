@@ -7,12 +7,16 @@ local M = {
 packer.append {
   ["folke/which-key.nvim"] = {
     config = function()
-      local which_key = require "which-key"
-      which_key.setup({
-        plugins = {
-          marks = true,
-          registers = true,
-          presets = {
+      local ok, which_key = pcall(require, "which-key")
+      if not ok then
+        return
+      end
+      which_key.setup(
+        {
+          plugins = {
+            marks = true,
+            registers = true,
+            presets = {
               operators = true,
               motions = true,
               text_objects = false,
@@ -20,39 +24,39 @@ packer.append {
               nav = true,
               z = true,
               g = true
+            },
+            spelling = {enabled = true, suggestions = 20}
           },
-          spelling = {enabled = true, suggestions = 20}
-      },
-      icons = {breadcrumb = "»", separator = "➜", group = "+"},
-      window = {
-          border = "none",
-          position = "bottom",
-          margin = {1, 0, 1, 0},
-          padding = {2, 2, 2, 2}
-      },
-      layout = {
-          height = {min = 4, max = 25},
-          width = {min = 20, max = 50},
-          spacing = 3
-      },
-      popup_mappings = {
-          scroll_down = "<c-d>", -- binding to scroll down inside the popup
-          scroll_up = "<c-u>" -- binding to scroll up inside the popup
-      },
-      triggers = "auto",
-      hidden = {
-          "<silent>",
-          "<cmd>",
-          "<Cmd>",
-          "<CR>",
-          "call",
-          "lua",
-          "^:",
-          "^ "
-      },
-      show_help = true
-
-      })
+          icons = {breadcrumb = "»", separator = "➜", group = "+"},
+          window = {
+            border = "none",
+            position = "bottom",
+            margin = {1, 0, 1, 0},
+            padding = {2, 2, 2, 2}
+          },
+          layout = {
+            height = {min = 4, max = 25},
+            width = {min = 20, max = 50},
+            spacing = 3
+          },
+          popup_mappings = {
+            scroll_down = "<c-d>", -- binding to scroll down inside the popup
+            scroll_up = "<c-u>" -- binding to scroll up inside the popup
+          },
+          triggers = "auto",
+          hidden = {
+            "<silent>",
+            "<cmd>",
+            "<Cmd>",
+            "<CR>",
+            "call",
+            "lua",
+            "^:",
+            "^ "
+          },
+          show_help = true
+        }
+      )
     end
   }
 }
@@ -74,7 +78,10 @@ M.compile = function(keymappings)
   if keymappings == nil then
     keymappings = M.keymappings
   end
-  local wk = require "which-key"
+  local ok, wk = pcall(require, "which-key")
+  if not ok then
+    return
+  end
   for _, group in ipairs(keymappings) do
     wk.register(group.mappings, group.options)
   end

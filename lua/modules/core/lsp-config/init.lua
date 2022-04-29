@@ -121,6 +121,6 @@ MAIN.configurations["lsp-config.installer"] = {
 }
 
 MAIN.packer.append {
-  ["williamboman/nvim-lsp-installer"] = MAIN.configurations["lsp-config.installer"].packer_module,
+  ["williamboman/nvim-lsp-installer"] = MAIN.must_require("nvim-lsp-installer","lsp-config.installer").packer_module,
   ["neovim/nvim-lspconfig"] = MAIN.configurations["lsp-config"].packer_module
 }

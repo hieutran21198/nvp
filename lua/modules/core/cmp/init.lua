@@ -28,17 +28,7 @@ MAIN.configurations["cmp"] = {
   },
   source_menus = {},
   plugin_setup_params = {
-    sources = {},
-    formatting = {
-      -- applied codicons
-      format = {
-        function(_, vim_item)
-          local c = MAIN.configurations["cmp"]
-          vim_item.kind = (c.kinds[vim_item.kind] or "") .. vim_item.kind
-          return vim_item
-        end
-      }
-    }
+    sources = {}
     ---TODO: configure the plugin
   },
   packer_module = {
@@ -200,22 +190,7 @@ MAIN.configurations["cmp.cmp-path"] = {
 }
 
 MAIN.configurations["codicons"] = {
-  packer_module = {
-    config = function()
-      local c = MAIN.configurations["cmp"]
-      table.insert(
-        c.plugin_setup_params.formatting.format,
-        function(_, vim_item)
-          local co = MAIN.configurations["codicons"]
-          local codicon = co.codicon_map[vim_item.kind]
-          if codicon then
-            vim_item.kind = (codicon or "") .. " " .. vim_item.kind
-          end
-          return vim_item
-        end
-      )
-    end
-  },
+  packer_module = {},
   codicon_map = {
     ["Text"] = "",
     ["Method"] = "",
@@ -251,13 +226,13 @@ MAIN.packer.append {
   ["hrsh7th/cmp-path"] = MAIN.configurations["cmp.cmp-path"].packer_module,
   ["github/copilot.vim"] = {},
   ["hrsh7th/cmp-copilot"] = MAIN.configurations["cmp.cmp-copilot"].packer_module,
-  ["hrsh7th/cmp-vsnip"] = MAIN.configurations["cmp.cmp-vsnip"].packer_module,
-  "hrsh7th/vim-vsnip",
+  -- ["hrsh7th/cmp-vsnip"] = MAIN.configurations["cmp.cmp-vsnip"].packer_module,
+  ["hrsh7th/vim-vsnip"] = MAIN.configurations["cmp.cmp-vsnip"].packer_module,
   ["hrsh7th/cmp-nvim-lua"] = MAIN.configurations["cmp.cmp-nvim-lua"].packer_module,
   ["ray-x/cmp-treesitter"] = MAIN.configurations["cmp.cmp-treesitter"].packer_module,
   ["mtoohey31/cmp-fish"] = MAIN.configurations["cmp.cmp-fish"].packer_module,
-  ["andersevenrud/cmp-tmux"] = MAIN.configurations["cmp.cmp-tmux"].packer_module,
+  -- ["andersevenrud/cmp-tmux"] = MAIN.configurations["cmp.cmp-tmux"].packer_module,
   ["mortepau/codicons.nvim"] = MAIN.configurations["codicons"].packer_module,
   -- main plugin.
-  ["hrsh7th/nvim-cmp"] = MAIN.configurations["cmp"].packer_module
+  ["hrsh7th/nvim-cmp"] = MAIN.must_require("cmp", "cmp").packer_module
 }

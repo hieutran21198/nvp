@@ -2,6 +2,7 @@ MAIN = {
   configurations = {},
   packer = require "common.packer",
   which_key = require "common.which-key",
+  colorscheme = "vscode",
   g = {
     mapleader = " "
   },
@@ -32,8 +33,9 @@ MAIN = {
   options = {
     laststatus = 2,
     textwidth = 120,
+    transparent = true,
+    background = 'dark',
     line_wrap_cursor_movement = true,
-    transparent = false,
     backup = false,
     clipboard = "unnamedplus",
     cmdheight = 2,
@@ -127,6 +129,26 @@ MAIN.require_user_config = function(user_config_filepath)
   end
 end
 
+---@return MAIN.configurations
+MAIN.must_require = function(package_name, configurations_name)
+  local ok, package = pcall(require, package_name)
+  if not ok then
+    local packer_module = {}
+
+    if type(MAIN.configurations[configurations_name].packer_module) == "table" then
+      for k, v in pairs(MAIN.configurations[configurations_name].packer_module) do
+        if k ~= "config" and k ~= "setup" then
+          packer_module[k] = v
+        end
+      end
+    end
+    return {
+      packer_module = packer_module
+    }
+  end
+  return MAIN.configurations[configurations_name]
+end
+
 local bootstrap_options = {
   user_config_filepath = vim.env.HOME .. "/.config/nvim/settings.lua"
 }
@@ -153,5 +175,9 @@ MAIN.bootstrap = function(opts)
   ---Load plugins
   MAIN.packer.startup()
 
-  vim.cmd[[ PackerCompile ]]
+  vim.cmd [[ PackerCompile ]]
+
+  if MAIN.colorscheme ~= "" then
+    vim.cmd("colorscheme " .. MAIN.colorscheme)
+  end
 end
