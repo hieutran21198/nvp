@@ -61,11 +61,11 @@ MAIN.configurations["gitsigns"] = {
   },
   packer_module = {
     requires = {"nvim-lua/plenary.nvim"},
-    event = "BufReadPre",
+    tag = "release",
     config = function()
+      local gc = require "gitsigns"
       local c = MAIN.configurations["gitsigns"]
-      local gitsigns = require "gitsigns"
-      gitsigns.setup(c.plugin_setup_params)
+      gc.setup(c.plugin_setup_params)
       MAIN.which_key.compile(c.key_mappings)
     end
   },
