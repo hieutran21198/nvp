@@ -2,6 +2,11 @@ require "modules.core.cmp"
 require "modules.core.lsp-config"
 require "modules.core.neo-tree"
 require "modules.core.formatter"
+require "modules.core.autopairs"
+require "modules.core.telescope"
+require "modules.core.nvim-treesitter"
+require "modules.core.comment"
+require "modules.core.fterm"
 
 vim.g["mapleader"] = " "
 
@@ -15,6 +20,10 @@ for k, v in pairs(
 ) do
   vim.g[k] = v
 end
+
+MAIN.packer.append {
+  "Mofiqul/vscode.nvim"
+}
 
 local generic_opts_any = {noremap = true, silent = true}
 local generic_opts = {

@@ -1,8 +1,8 @@
 MAIN.configurations["neo-tree"] = {
   toggle_neotree = {
     mappings = {
-      ["<leader>e"] = {"<cmd>NeoTreeFocusToggle<CR>", "Neo-tree"},
-      ["\\"] = {"<cmd>NeoTreeRevealToggle<CR>", "Neo-tree reveal"}
+      ["<leader>ee"] = {"<cmd>NeoTreeFocusToggle<CR>", "Explorer"},
+      ["\\"] = {"<cmd>NeoTreeRevealToggle<CR>", "Fast open folder explorer"}
     },
     options = {
       mode = "n",
@@ -17,6 +17,7 @@ MAIN.configurations["neo-tree"] = {
     popup_border_style = "rounded",
     enable_git_status = true,
     enable_diagnostics = true,
+    use_default_mappings = false,
     default_component_configs = {
       container = {
         enable_character_fade = true
@@ -72,7 +73,7 @@ MAIN.configurations["neo-tree"] = {
       }
     },
     window = {
-      position = "right",
+      position = "left",
       width = 40,
       mapping_options = {
         noremap = true,
@@ -85,16 +86,13 @@ MAIN.configurations["neo-tree"] = {
         },
         ["<2-LeftMouse>"] = "open",
         ["<cr>"] = "open",
-        ["S"] = "open_split",
-        ["s"] = "open_vsplit",
-        -- ["S"] = "split_with_window_picker",
-        -- ["s"] = "vsplit_with_window_picker",
+        ["<c-s>"] = "open_split",
+        ["<c-v>"] = "open_vsplit",
         ["t"] = "open_tabnew",
         ["w"] = "open_with_window_picker",
         ["C"] = "close_node",
         ["a"] = {
           "add",
-          -- some commands may take optional config options, see `:h neo-tree-mappings` for details
           config = {
             show_path = "relative" -- "none", "relative", "absolute"
           }
@@ -122,10 +120,19 @@ MAIN.configurations["neo-tree"] = {
         hide_by_name = {
           ".DS_Store",
           "thumbs.db"
-          --"node_modules"
         },
         hide_by_pattern = {},
-        never_show = {}
+        never_show = {},
+        window = {
+          mappings = {
+            ["<bs>"] = "navigate_up",
+            ["."] = "set_root",
+            ["H"] = "toggle_hidden",
+            ["/"] = "fuzzy_finder",
+            ["f"] = "filter_on_submit",
+            ["<c-x>"] = "clear_filter"
+          }
+        }
       },
       follow_current_file = true, -- This will find and focus the file in the active buffer every
       -- time the current file is changed while the tree is open.
@@ -203,5 +210,5 @@ MAIN.configurations["neo-tree"] = {
 }
 
 MAIN.packer.append {
-  ["nvim-neo-tree/neo-tree.nvim"] = MAIN.must_require("neo-tree","neo-tree").packer_module
+  ["nvim-neo-tree/neo-tree.nvim"] = MAIN.must_require("neo-tree", "neo-tree").packer_module
 }

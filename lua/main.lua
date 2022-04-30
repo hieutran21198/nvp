@@ -33,8 +33,8 @@ MAIN = {
   options = {
     laststatus = 2,
     textwidth = 120,
-    transparent = true,
-    background = 'dark',
+    transparent = false,
+    background = "dark",
     line_wrap_cursor_movement = true,
     backup = false,
     clipboard = "unnamedplus",
@@ -98,17 +98,32 @@ MAIN = {
             ["S"] = {"<cmd>PackerStatus<cr>", "Status"},
             ["u"] = {"<cmd>PackerUpdate<cr>", "Update"}
           },
-          ["R"] = {
-            "<cmd>lua MAIN.reload()<cr>",
-            "Reload neovim"
+          ["b"] = {
+            name = "Buffer management",
+            ["c"] = {'<cmd>let @/=""<cr>', "Clear highlights"},
+            ["d"] = {"<cmd>Bdelete!<CR>", "Close Buffer"}
           },
-          ["c"] = {
-            name = "C prefix",
-            ["h"] = {'<cmd>let @/=""<cr>', "Hightlight"}
+          ["g"] = {
+            name = "Git management"
+          },
+          ["f"] = {
+            name = "File management"
+          },
+          ["s"] = {
+            name = "Searching"
+          },
+          ["e"] = {
+            name = "Explorer"
+          },
+          ["n"] = {
+            name = "NVP",
+            ["r"] = {
+              "<cmd>lua MAIN.reload()<cr>",
+              "Reload NVP"
+            }
           },
           ["w"] = {"<cmd>w<cr>", "Write to file"},
-          ["q"] = {"<cmd>bd<cr>", "Quit"},
-          ["b"] = {"<cmd>Buffers<CR>", "Opened buffers"}
+          ["q"] = {"<cmd>bd<cr>", "Quit"}
         }
       },
       options = {
@@ -121,6 +136,7 @@ MAIN = {
     }
   }
 }
+
 ---@param user_config_filepath string
 MAIN.require_user_config = function(user_config_filepath)
   local utils = require "common.utils"
@@ -129,9 +145,9 @@ MAIN.require_user_config = function(user_config_filepath)
   end
 end
 
----@return MAIN.configurations
+---@return table MAIN.configurations[configurations_name]
 MAIN.must_require = function(package_name, configurations_name)
-  local ok, package = pcall(require, package_name)
+  local ok, _ = pcall(require, package_name)
   if not ok then
     local packer_module = {}
 
@@ -149,8 +165,30 @@ MAIN.must_require = function(package_name, configurations_name)
   return MAIN.configurations[configurations_name]
 end
 
+MAIN.reload = function()
+  dofile(vim.env.HOME .. "/.config/nvim/lua/main.lua")
+
+  local prefix_dirs = {"^common", "^modules.core"}
+  for name, _ in pairs(package.loaded) do
+    if name ~= "main" then
+      for _, dir in ipairs(prefix_dirs) do
+        if name:match(dir) then
+          package.loaded[name] = nil
+        end
+      end
+    end
+  end
+
+  if vim.fn.delete(vim.env.HOME .. "/.local/share/nvim/plugin/packer_compiled.lua") ~= 0 then
+    print("cannot delete cached compile plugins")
+  end
+
+  MAIN.bootstrap({reload = true})
+end
+
 local bootstrap_options = {
-  user_config_filepath = vim.env.HOME .. "/.config/nvim/settings.lua"
+  user_config_filepath = vim.env.HOME .. "/.config/nvim/settings.lua",
+  reload = false
 }
 
 ---@param opts table
@@ -161,7 +199,9 @@ MAIN.bootstrap = function(opts)
     bootstrap_options = vim.tbl_deep_extend("force", bootstrap_options, opts)
   end
 
-  MAIN.packer.provision()
+  if bootstrap_options.reload == false then
+    MAIN.packer.provision()
+  end
   ---Load more modules
   require "modules.core"
 
@@ -173,7 +213,9 @@ MAIN.bootstrap = function(opts)
   utils.set_g(MAIN.g)
   MAIN.which_key.compile(MAIN.key_mappings)
   ---Load plugins
-  MAIN.packer.startup()
+  if bootstrap_options.reload == false then
+    MAIN.packer.startup()
+  end
 
   vim.cmd [[ PackerCompile ]]
 

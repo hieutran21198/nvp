@@ -4,6 +4,7 @@ save_profile: #
 		rm -rf ${HOME}/.config/nvim
 		mv ${HOME}/.local/share/nvim/ ${HOME}/.local/share/nvim.bak
 revert_profile: #
+		rm -rf ${HOME}/.config/nvim
 		ln -s ${HOME}/proj/vigo ${HOME}/.config/nvim
 		rm -rf ${HOME}/.local/share/nvim
 		mv ${HOME}/.local/share/nvim.bak ${HOME}/.local/share/nvim

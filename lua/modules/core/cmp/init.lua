@@ -1,35 +1,18 @@
 MAIN.configurations["cmp"] = {
-  kinds = {
-    Text = "?  ",
-    Method = "?  ",
-    Function = "?  ",
-    Constructor = "?  ",
-    Field = "?  ",
-    Variable = "?  ",
-    Class = "?  ",
-    Interface = "?  ",
-    Module = "?  ",
-    Property = "?  ",
-    Unit = "?  ",
-    Value = "?  ",
-    Enum = "?  ",
-    Keyword = "?  ",
-    Snippet = "?  ",
-    Color = "?  ",
-    File = "?  ",
-    Reference = "?  ",
-    Folder = "?  ",
-    EnumMember = "?  ",
-    Constant = "?  ",
-    Struct = "?  ",
-    Event = "?  ",
-    Operator = "?  ",
-    TypeParameter = "?  "
-  },
   source_menus = {},
   plugin_setup_params = {
-    sources = {}
-    ---TODO: configure the plugin
+    view = {
+      entries = {name = "custom", selection_order = "near_cursor"}
+    },
+    snippet = {
+      expand = function(args)
+        local ok, snippy = pcall(require, "snippy")
+        if not ok then
+          return
+        end
+        snippy.expand_snippet(args.body)
+      end
+    }
   },
   packer_module = {
     config = function()
@@ -37,35 +20,106 @@ MAIN.configurations["cmp"] = {
       local cmp = require "cmp"
       cmp.setup(c.plugin_setup_params)
     end
-  }
+  },
+  keymappings = {}
 }
 
-MAIN.configurations["cmp.cmp-vsnip"] = {
-  plugin_setup_params = {},
+MAIN.configurations["cmp.lspkind"] = {
   packer_module = {
     config = function()
+      local lspkind = require "lspkind"
       local c = MAIN.configurations["cmp"]
-      c.plugin_setup_params.snippet = {
-        expand = function(args)
-          vim.fn["vsnip#anonymous"](args.body)
-        end
+      lspkind.init(
+        {
+          mode = "symbol_text",
+          preset = "default",
+          symbol_map = {
+            Text = "",
+            Method = "",
+            Function = "",
+            Constructor = "",
+            Field = "ﰠ",
+            Variable = "",
+            Class = "ﴯ",
+            Interface = "",
+            Module = "",
+            Property = "ﰠ",
+            Unit = "塞",
+            Value = "",
+            Enum = "",
+            Keyword = "",
+            Snippet = "",
+            Color = "",
+            File = "",
+            Reference = "",
+            Folder = "",
+            EnumMember = "",
+            Constant = "",
+            Struct = "פּ",
+            Event = "",
+            Operator = "",
+            TypeParameter = ""
+          }
+        }
+      )
+      c.plugin_setup_params["formatting"] = {
+        format = lspkind.cmp_format(
+          {
+            mode = "symbol_text",
+            menu = ({
+              buffer = "[BUF]",
+              nvim_lsp = "[LSP]",
+              nvim_lua = "[Lua]",
+              copilot = "[AI]",
+              snippy = "[SN]"
+            }),
+            maxwidth = 50
+          }
+        )
       }
     end
   }
 }
 
+local utils = require "common.utils"
+
+utils.must_require(
+  function()
+    local cmp = require "cmp"
+    local c = MAIN.configurations["cmp"]
+    c.plugin_setup_params["mapping"] = {
+      ["<C-d>"] = cmp.mapping.scroll_docs(-4),
+      ["<C-f>"] = cmp.mapping.scroll_docs(4),
+      ["<Tab>"] = cmp.mapping(cmp.mapping.select_next_item(), {"i", "s"}),
+      ["<S-Tab>"] = cmp.mapping(cmp.mapping.select_prev_item(), {"i", "s"}),
+      ["<C-s>"] = cmp.mapping.complete_common_string(),
+      ["<C-e>"] = cmp.mapping(
+        {
+          i = cmp.mapping.abort(),
+          c = cmp.mapping.close()
+        }
+      ),
+      ["<CR>"] = cmp.mapping.confirm({select = true})
+    }
+    c.plugin_setup_params["sources"] =
+      cmp.config.sources(
+      {
+        {name = "copilot"},
+        {name = "nvim_lsp"},
+        {name = "snippy"},
+        {name = "path"},
+        {name = "buffer"},
+        {name = "treesitter"}
+      }
+    )
+  end,
+  "cmp"
+)
+
 MAIN.configurations["cmp.cmp-copilot"] = {
   plugin_setup_params = {},
   packer_module = {
     config = function()
-      local c = MAIN.configurations["cmp"]
-      table.insert(
-        c.plugin_setup_params.sources,
-        {
-          name = "copilot",
-          priority = 2
-        }
-      )
     end
   }
 }
@@ -74,15 +128,6 @@ MAIN.configurations["cmp.cmp-nvim-lua"] = {
   plugin_setup_params = {},
   packer_module = {
     config = function()
-      local c = MAIN.configurations["cmp"]
-      table.insert(
-        c.plugin_setup_params.sources,
-        {
-          name = "nvim-lua",
-          type = "lua",
-          priority = 1
-        }
-      )
     end
   }
 }
@@ -90,51 +135,6 @@ MAIN.configurations["cmp.cmp-nvim-lua"] = {
 MAIN.configurations["cmp.cmp-treesitter"] = {
   packer_module = {
     config = function()
-      local c = MAIN.configurations["cmp"]
-      table.insert(
-        c.plugin_setup_params.sources,
-        {
-          name = "treesitter",
-          priority = 2
-        }
-      )
-    end
-  }
-}
-
-MAIN.configurations["cmp.cmp-fish"] = {
-  packer_module = {
-    ft = "fish",
-    config = function()
-      local c = MAIN.configurations["cmp"]
-      table.insert(
-        c.plugin_setup_params.sources,
-        {
-          name = "fish",
-          priority = 3
-        }
-      )
-    end
-  }
-}
-
-MAIN.configurations["cmp.cmp-tmux"] = {
-  packer_module = {
-    config = function()
-      local c = MAIN.configurations["cmp"]
-      table.insert(
-        c.plugin_setup_params.sources,
-        {
-          name = "tmux",
-          priority = 4,
-          option = {
-            all_panes = false,
-            label = "[tmux]",
-            trigger_characters = {"."},
-            trigger_characters_ft = {}
-          }
-        }
-      )
     end
   }
 }
@@ -142,15 +142,6 @@ MAIN.configurations["cmp.cmp-tmux"] = {
 MAIN.configurations["cmp.cmp-nvim-lsp"] = {
   packer_module = {
     config = function()
-      local c = MAIN.configurations["cmp"]
-      table.insert(
-        c.plugin_setup_params.sources,
-        {
-          name = "nvim-lsp",
-          priority = 1
-        }
-      )
-      c.source_menus["nvim_lsp"] = "[LSP]"
     end
   },
   ---TODO: use it in setup nvim-lsp
@@ -164,13 +155,6 @@ MAIN.configurations["cmp.cmp-nvim-lsp"] = {
 MAIN.configurations["cmp.cmp-buffer"] = {
   packer_module = {
     config = function()
-      local c = MAIN.configurations["cmp"]
-      table.insert(
-        c.plugin_setup_params.sources,
-        {
-          name = "buffer"
-        }
-      )
     end
   }
 }
@@ -178,45 +162,24 @@ MAIN.configurations["cmp.cmp-buffer"] = {
 MAIN.configurations["cmp.cmp-path"] = {
   packer_module = {
     config = function()
-      local c = MAIN.configurations["cmp"]
-      table.insert(
-        c.plugin_setup_params.sources,
-        {
-          name = "path"
-        }
-      )
     end
   }
 }
 
-MAIN.configurations["codicons"] = {
-  packer_module = {},
-  codicon_map = {
-    ["Text"] = "",
-    ["Method"] = "",
-    ["Function"] = "",
-    ["Constructor"] = "",
-    ["Field"] = "",
-    ["Variable"] = "",
-    ["Class"] = "",
-    ["Interface"] = "",
-    ["Module"] = "",
-    ["Property"] = "",
-    ["Unit"] = "",
-    ["Value"] = "",
-    ["Enum"] = "",
-    ["Keyword"] = "",
-    ["Snippet"] = "",
-    ["Color"] = "",
-    ["File"] = "",
-    ["Reference"] = "",
-    ["Folder"] = "",
-    ["EnumMember"] = "",
-    ["Constant"] = "",
-    ["Struct"] = "",
-    ["Event"] = "",
-    ["Operator"] = "",
-    ["TypeParameter"] = ""
+MAIN.configurations["cmp.snippy"] = {
+  plugin_setup_params = {
+    mappings = {
+      is = {["<C-j>"] = "expand_or_advance", ["<C-k>"] = "previous"}
+    },
+    snippets_dirs = {vim.env.HOME .. "/.config/nvim/snippets"},
+    hl_group = "Search"
+  },
+  packer_module = {
+    config = function()
+      local snippy = require "snippy"
+      local c = MAIN.configurations["cmp"]
+      snippy.setup(c.plugin_setup_params)
+    end
   }
 }
 
@@ -226,13 +189,11 @@ MAIN.packer.append {
   ["hrsh7th/cmp-path"] = MAIN.configurations["cmp.cmp-path"].packer_module,
   ["github/copilot.vim"] = {},
   ["hrsh7th/cmp-copilot"] = MAIN.configurations["cmp.cmp-copilot"].packer_module,
-  -- ["hrsh7th/cmp-vsnip"] = MAIN.configurations["cmp.cmp-vsnip"].packer_module,
-  ["hrsh7th/vim-vsnip"] = MAIN.configurations["cmp.cmp-vsnip"].packer_module,
+  ["dcampos/cmp-snippy"] = MAIN.must_require("snippy", "cmp.snippy").packer_module,
+  "dcampos/nvim-snippy",
   ["hrsh7th/cmp-nvim-lua"] = MAIN.configurations["cmp.cmp-nvim-lua"].packer_module,
   ["ray-x/cmp-treesitter"] = MAIN.configurations["cmp.cmp-treesitter"].packer_module,
-  ["mtoohey31/cmp-fish"] = MAIN.configurations["cmp.cmp-fish"].packer_module,
-  -- ["andersevenrud/cmp-tmux"] = MAIN.configurations["cmp.cmp-tmux"].packer_module,
-  ["mortepau/codicons.nvim"] = MAIN.configurations["codicons"].packer_module,
+  ["onsails/lspkind.nvim"] = MAIN.must_require("lspkind", "cmp.lspkind").packer_module,
   -- main plugin.
   ["hrsh7th/nvim-cmp"] = MAIN.must_require("cmp", "cmp").packer_module
 }
