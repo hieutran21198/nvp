@@ -87,7 +87,7 @@ MAIN = {
     {
       mappings = {
         ["<leader>"] = {
-          ["P"] = {
+          ["p"] = {
             name = "Packer",
             ["i"] = {"<cmd>PackerInstall<cr>", "Install components"},
             ["c"] = {"<cmd>PackerCompile<cr>", "Compile"},
@@ -101,7 +101,8 @@ MAIN = {
           ["b"] = {
             name = "Buffer management",
             ["c"] = {'<cmd>let @/=""<cr>', "Clear highlights"},
-            ["d"] = {"<cmd>Bdelete!<CR>", "Close Buffer"}
+            ["d"] = {"<cmd>Bdelete!<CR>", "Close Buffer"},
+            ["w"] = {"<cmd>write<CR>", "Write to file"}
           },
           ["g"] = {
             name = "Git management"
@@ -112,9 +113,6 @@ MAIN = {
           ["s"] = {
             name = "Searching"
           },
-          ["e"] = {
-            name = "Explorer"
-          },
           ["n"] = {
             name = "NVP",
             ["r"] = {
@@ -122,8 +120,15 @@ MAIN = {
               "Reload NVP"
             }
           },
-          ["w"] = {"<cmd>w<cr>", "Write to file"},
-          ["q"] = {"<cmd>bd<cr>", "Quit"}
+          ["w"] = {
+            name = "Window",
+            p = {"<c-w>x", "Swap"},
+            q = {"<cmd>:q<cr>", "Close"},
+            s = {"<cmd>:split<cr>", "Horizontal Split"},
+            t = {"<c-w>t", "Move to new tab"},
+            ["="] = {"<c-w>=", "Equally size"},
+            v = {"<cmd>:vsplit<cr>", "Verstical Split"}
+          }
         }
       },
       options = {

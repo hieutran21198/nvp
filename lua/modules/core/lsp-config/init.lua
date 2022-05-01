@@ -167,15 +167,18 @@ MAIN.configurations["lsp-config.signature"] = {
     timer_interval = 200, -- default timer check interval set to lower value if you want to reduce latency
     toggle_key = nil -- toggle signature on and off in insert mode,  e.g. toggle_key = '<M-x>'
   },
-  packer_module = function()
-    local c = MAIN.configurations["lsp-config.signature"]
-    local signature = require "lsp_signature"
-    signature.setup(c.plugin_setup_params)
-  end
+  packer_module = {
+    requires = {"neovim/nvim-lspconfig"},
+    config = function()
+      local c = MAIN.configurations["lsp-config.signature"]
+      local signature = require "lsp_signature"
+      signature.setup(c.plugin_setup_params)
+    end
+  }
 }
 
 MAIN.packer.append {
   ["williamboman/nvim-lsp-installer"] = MAIN.must_require("nvim-lsp-installer", "lsp-config.installer").packer_module,
-  ["ray-x/lsp_signature.nvim"] = MAIN.must_require("lsp_signature", "lsp-config.signature").packer_module,
-  ["neovim/nvim-lspconfig"] = MAIN.configurations["lsp-config"].packer_module
+  ["neovim/nvim-lspconfig"] = MAIN.configurations["lsp-config"].packer_module,
+  ["ray-x/lsp_signature.nvim"] = MAIN.must_require("lsp_signature", "lsp-config.signature").packer_module
 }

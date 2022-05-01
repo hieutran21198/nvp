@@ -144,7 +144,6 @@ MAIN.configurations["cmp.cmp-nvim-lsp"] = {
     config = function()
     end
   },
-  ---TODO: use it in setup nvim-lsp
   ---@param caps table
   ---@return table updated_caps
   update_capabilities = function(caps)

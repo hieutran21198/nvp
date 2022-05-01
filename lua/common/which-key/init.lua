@@ -74,7 +74,7 @@ M.store = function(mappings, options)
 end
 
 ---@param keymappings table | nil
-M.compile = function(keymappings)
+M.compile = function(keymappings, debug)
   if keymappings == nil then
     keymappings = M.keymappings
   end
@@ -82,7 +82,20 @@ M.compile = function(keymappings)
   if not ok then
     return
   end
+
+  if debug ~= nil and debug == true then
+    print(vim.inspect(keymappings))
+  end
+
   for _, group in ipairs(keymappings) do
+    if group.options == nil then
+      group.options = {
+        mode = "n",
+        silent = true,
+        noremap = true,
+        nowait = true
+      }
+    end
     wk.register(group.mappings, group.options)
   end
 end

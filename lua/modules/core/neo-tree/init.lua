@@ -1,7 +1,8 @@
 MAIN.configurations["neo-tree"] = {
   toggle_neotree = {
     mappings = {
-      ["<leader>ee"] = {"<cmd>NeoTreeFocusToggle<CR>", "Explorer"},
+      ["<leader>fe"] = {"<cmd>NeoTreeFocusToggle<CR>", "File & Folder explorer"},
+      ["<leader>e"] = {"<cmd>NeoTreeFocusToggle<CR>", "File management[File & Folder explorer]"},
       ["\\"] = {"<cmd>NeoTreeRevealToggle<CR>", "Fast open folder explorer"}
     },
     options = {

@@ -66,31 +66,25 @@ MAIN.configurations["gitsigns"] = {
       local gc = require "gitsigns"
       local c = MAIN.configurations["gitsigns"]
       gc.setup(c.plugin_setup_params)
-      MAIN.which_key.compile(c.key_mappings)
+
+      local mapping_on_attach_n = MAIN.configurations["lsp-config"].key_mappings_on_attach["*"]["n"]
+      if mapping_on_attach_n["<leader>"] == nil then
+        mapping_on_attach_n["<leader>"] = {}
+      end
+      mapping_on_attach_n["<leader>"] =
+        vim.tbl_deep_extend("force", mapping_on_attach_n["<leader>"], c.key_mappings_on_attach)
     end
   },
-  key_mappings = {
-    {
-      mappings = {
-        ["<leader>"] = {
-          gj = {"<cmd>lua require 'gitsigns'.next_hunk()<cr>", "Next Hunk"},
-          gk = {"<cmd>lua require 'gitsigns'.prev_hunk()<cr>", "Prev Hunk"},
-          gp = {"<cmd>lua require 'gitsigns'.preview_hunk()<cr>", "Preview Hunk"},
-          gr = {"<cmd>lua require 'gitsigns'.reset_hunk()<cr>", "Reset Hunk"},
-          gR = {"<cmd>lua require 'gitsigns'.reset_buffer()<cr>", "Reset Buffer"},
-          gs = {"<cmd>lua require 'gitsigns'.stage_hunk()<cr>", "Stage Hunk"},
-          gu = {
-            "<cmd>lua require 'gitsigns'.undo_stage_hunk()<cr>",
-            "Undo Stage Hunk"
-          }
-        }
-      },
-      options = {
-        noremap = true,
-        silent = true,
-        mode = "n",
-        nowait = true
-      }
+  key_mappings_on_attach = {
+    gj = {"<cmd>lua require 'gitsigns'.next_hunk()<cr>", "Next Hunk"},
+    gk = {"<cmd>lua require 'gitsigns'.prev_hunk()<cr>", "Prev Hunk"},
+    gp = {"<cmd>lua require 'gitsigns'.preview_hunk()<cr>", "Preview Hunk"},
+    gr = {"<cmd>lua require 'gitsigns'.reset_hunk()<cr>", "Reset Hunk"},
+    gR = {"<cmd>lua require 'gitsigns'.reset_buffer()<cr>", "Reset Buffer"},
+    gs = {"<cmd>lua require 'gitsigns'.stage_hunk()<cr>", "Stage Hunk"},
+    gu = {
+      "<cmd>lua require 'gitsigns'.undo_stage_hunk()<cr>",
+      "Undo Stage Hunk"
     }
   }
 }
