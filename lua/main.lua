@@ -113,6 +113,9 @@ MAIN = {
           ["s"] = {
             name = "Searching"
           },
+          ["i"] = {
+            name = "Key mappings by specific language"
+          },
           ["n"] = {
             name = "NVP",
             ["r"] = {
@@ -226,5 +229,22 @@ MAIN.bootstrap = function(opts)
 
   if MAIN.colorscheme ~= "" then
     vim.cmd("colorscheme " .. MAIN.colorscheme)
+  end
+end
+
+MAIN.truthy = function()
+  for package_name, packer_module in pairs(MAIN.configurations) do
+    local ok, packaged = pcall(require, package_name)
+    if ok and packer_module.config == nil then
+      packer_module.config = function()
+        local c = MAIN.configurations[package_name]
+        if c.plugin_setup_params ~= nil then
+          packaged.setup(c.plugin_setup_params)
+        end
+        if c.key_mappings ~= nil then
+          MAIN.which_key.compile(c.key_mappings)
+        end
+      end
+    end
   end
 end

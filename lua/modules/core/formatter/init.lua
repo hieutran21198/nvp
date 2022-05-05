@@ -64,15 +64,6 @@ MAIN.configurations["formatter"] = {
           stdin = false
         }
       end
-    },
-    go = {
-      function()
-        return {
-          exe = "goimports",
-          args = {"-w", vim.fn.fnameescape(vim.api.nvim_buf_get_name(0))},
-          stdin = false
-        }
-      end
     }
   },
   format_on_save = {
@@ -120,5 +111,5 @@ for _, v in ipairs({"javascript", "typescript", "typescriptreact", "javascriptre
 end
 
 MAIN.packer.append {
-  ["mhartington/formatter.nvim"] = MAIN.must_require("formatter","formatter").packer_module
+  ["mhartington/formatter.nvim"] = MAIN.must_require("formatter", "formatter").packer_module
 }

@@ -32,7 +32,8 @@ MAIN.configurations["lsp-config"] = {
             name = "LSP",
             a = {"<cmd>lua vim.lsp.buf.code_action()<cr>", "Code Actions"},
             d = {"<cmd>lua vim.diagnostic.open_float()<cr>", "Diagnostics"},
-            f = {"<cmd>lua vim.lsp.buf.formatting()<cr>", "Format buffer"}
+            f = {"<cmd>lua vim.lsp.buf.formatting()<cr>", "Format buffer"},
+            r = {"<cmd>LspRestart<cr>", "Restart LSP clients"}
           }
         },
         ["<F2>"] = {"<cmd>lua vim.lsp.buf.rename()<cr>", "Rename"}

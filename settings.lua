@@ -21,7 +21,39 @@ on_attach_n_leader_l["S"] = {
 
 MAIN.packer.append {
   "rktjmp/lush.nvim",
-  "RishabhRD/gruvy"
+  "RishabhRD/gruvy",
+  ["ray-x/go.nvim"] = {
+    config = function()
+      local ok, go = pcall(require, "go")
+      if not ok then
+        return
+      end
+      go.setup {}
+
+      if MAIN.configurations["lsp-config"].key_mappings_on_attach["gopls"] == nil then
+        MAIN.configurations["lsp-config"].key_mappings_on_attach["gopls"] = {
+          ["n"] = {
+            ["<leader>"] = {
+              ["i"] = {
+                ["j"] = {"<cmd>GoAddTag json<CR>", "Add JSON tags to struct"},
+                ["s"] = {
+                  name = "Struct",
+                  ["f"] = {"<cmd>GoFillStruct<CR>", "Fill structs"},
+                  ["t"] = {":GoAddTag ", "Add Tags"}
+                },
+                ["f"] = {"<cmd>GoFixPlurals<CR>", "Quick fix function plurals"},
+                ["t"] = {
+                  ["a"] = {"<cmd>GoAlt!<CR>", "Goto alternative file"}
+                }
+              }
+            }
+          }
+        }
+      end
+
+      vim.api.nvim_exec([[ autocmd BufWritePre *.go :silent! lua require('go.format').goimport() ]], false)
+    end
+  }
 }
 
 MAIN.colorscheme = "gruvy"
