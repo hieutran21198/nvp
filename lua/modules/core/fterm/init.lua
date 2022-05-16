@@ -10,7 +10,8 @@ MAIN.configurations["fterm"] = {
   keymappings = {
     {
       mappings = {
-        ["<F7>"] = {"<cmd>lua require'FTerm'.toggle()<cr>", "Explorer"}
+        ["<F7>"] = {"<cmd>lua require'FTerm'.toggle()<cr>", "Explorer"},
+        ["<C-t>"] = {"<cmd>lua require'FTerm'.toggle()<cr>", "Explorer"}
       },
       options = {
         mode = "n",
@@ -22,7 +23,8 @@ MAIN.configurations["fterm"] = {
     },
     {
       mappings = {
-        ["<F7>"] = {"<cmd>lua require'FTerm'.toggle()<cr>", "Explorer"}
+        ["<F7>"] = {"<cmd>lua require'FTerm'.toggle()<cr>", "Explorer"},
+        ["<C-t>"] = {"<cmd>lua require'FTerm'.toggle()<cr>", "Explorer"}
       },
       options = {
         mode = "t",
@@ -42,6 +44,6 @@ MAIN.configurations["fterm"] = {
     end
   }
 }
-MAIN.packer.append {
+MAIN.packer.register {
   ["numtostr/FTerm.nvim"] = MAIN.must_require("FTerm", "fterm").packer_module
 }

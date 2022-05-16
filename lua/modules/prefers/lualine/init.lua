@@ -73,6 +73,6 @@ MAIN.configurations["lualine"] = {
     end
   }
 }
-MAIN.packer.append {
+MAIN.packer.register {
   ["nvim-lualine/lualine.nvim"] = MAIN.must_require("lualine", "lualine").packer_module
 }

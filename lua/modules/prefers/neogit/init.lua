@@ -37,6 +37,6 @@ MAIN.configurations["neogit"] = {
   }
 }
 
-MAIN.packer.append {
+MAIN.packer.register {
   ["TimUntersberger/neogit"] = MAIN.must_require("neogit", "neogit").packer_module
 }

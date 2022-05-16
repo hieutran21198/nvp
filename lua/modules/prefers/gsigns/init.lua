@@ -85,10 +85,21 @@ MAIN.configurations["gitsigns"] = {
     gu = {
       "<cmd>lua require 'gitsigns'.undo_stage_hunk()<cr>",
       "Undo Stage Hunk"
-    }
+    },
+    gd = {
+      "<cmd>Gitsigns diffthis HEAD<cr>",
+      "Git Diff"
+    },
+    gc = {"<cmd>Telescope git_commits<cr>", "Checkout commit"},
+    gC = {
+      "<cmd>Telescope git_bcommits<cr>",
+      "Checkout commit(for current file)"
+    },
+    go = {"<cmd>Telescope git_status<cr>", "Open changed file"},
+    gb = {"<cmd>Telescope git_branches<cr>", "Checkout branch"}
   }
 }
 
-MAIN.packer.append {
+MAIN.packer.register {
   ["lewis6991/gitsigns.nvim"] = MAIN.must_require("gitsigns", "gitsigns").packer_module
 }

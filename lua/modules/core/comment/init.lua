@@ -8,6 +8,6 @@ MAIN.configurations["comment"] = {
     end
   }
 }
-MAIN.packer.append {
+MAIN.packer.register {
   ["terrortylor/nvim-comment"] = MAIN.must_require("nvim_comment", "comment").packer_module
 }

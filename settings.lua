@@ -19,7 +19,7 @@ on_attach_n_leader_l["S"] = {
   "LSP workspace symbols"
 }
 
-MAIN.packer.append {
+MAIN.packer.register {
   "rktjmp/lush.nvim",
   "RishabhRD/gruvy",
   ["ray-x/go.nvim"] = {

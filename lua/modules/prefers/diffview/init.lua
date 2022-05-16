@@ -59,6 +59,6 @@ utils.must_require(
   "diffview"
 )
 
-MAIN.packer.append {
+MAIN.packer.register {
   ["sindrets/diffview.nvim"] = MAIN.must_require("diffview", "diffview").packer_module
 }

@@ -210,6 +210,6 @@ MAIN.configurations["neo-tree"] = {
   }
 }
 
-MAIN.packer.append {
+MAIN.packer.register {
   ["nvim-neo-tree/neo-tree.nvim"] = MAIN.must_require("neo-tree", "neo-tree").packer_module
 }

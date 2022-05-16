@@ -29,6 +29,6 @@ MAIN.configurations["treesitter"] = {
     end
   }
 }
-MAIN.packer.append {
+MAIN.packer.register {
   ["nvim-treesitter/nvim-treesitter"] = MAIN.must_require("nvim-treesitter.configs", "treesitter").packer_module
 }

@@ -21,7 +21,7 @@ for k, v in pairs(
   vim.g[k] = v
 end
 
-MAIN.packer.append {
+MAIN.packer.register {
   "Mofiqul/vscode.nvim"
 }
 

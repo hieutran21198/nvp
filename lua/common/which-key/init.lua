@@ -4,7 +4,7 @@ local M = {
   keymappings = {}
 }
 
-packer.append {
+packer.register {
   ["folke/which-key.nvim"] = {
     config = function()
       local ok, which_key = pcall(require, "which-key")

@@ -33,7 +33,13 @@ MAIN.configurations["lsp-config"] = {
             a = {"<cmd>lua vim.lsp.buf.code_action()<cr>", "Code Actions"},
             d = {"<cmd>lua vim.diagnostic.open_float()<cr>", "Diagnostics"},
             f = {"<cmd>lua vim.lsp.buf.formatting()<cr>", "Format buffer"},
-            r = {"<cmd>LspRestart<cr>", "Restart LSP clients"}
+            r = {"<cmd>LspRestart<cr>", "Restart LSP clients"},
+            i = {"<cmd>LspInfo<cr>", "LSP server info"},
+            I = {"<cmd>LspInstallInfo<cr>", "LSP server installer info"},
+            l = {"<cmd>lua vim.lsp.codelens.run()<cr>", "Code Lens"},
+            s = {"<cmd>Telescope lsp_document_symbols<cr>", "Document Symbols"},
+            S = {"<cmd>Telescope lsp_dynamic_workspace_symbols<cr>", "Workspace Symbols"},
+            e = {"<cmd>Telescope quickfix<cr>", "Quickfix"}
           }
         },
         ["<F2>"] = {"<cmd>lua vim.lsp.buf.rename()<cr>", "Rename"}
@@ -178,7 +184,7 @@ MAIN.configurations["lsp-config.signature"] = {
   }
 }
 
-MAIN.packer.append {
+MAIN.packer.register {
   ["williamboman/nvim-lsp-installer"] = MAIN.must_require("nvim-lsp-installer", "lsp-config.installer").packer_module,
   ["neovim/nvim-lspconfig"] = MAIN.configurations["lsp-config"].packer_module,
   ["ray-x/lsp_signature.nvim"] = MAIN.must_require("lsp_signature", "lsp-config.signature").packer_module

@@ -182,7 +182,7 @@ MAIN.configurations["cmp.snippy"] = {
   }
 }
 
-MAIN.packer.append {
+MAIN.packer.register {
   ["hrsh7th/cmp-nvim-lsp"] = MAIN.configurations["cmp.cmp-nvim-lsp"].packer_module,
   ["hrsh7th/cmp-buffer"] = MAIN.configurations["cmp.cmp-buffer"].packer_module,
   ["hrsh7th/cmp-path"] = MAIN.configurations["cmp.cmp-path"].packer_module,

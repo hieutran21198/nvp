@@ -22,7 +22,6 @@ MAIN.configurations["bufferline"] = {
         local icon = level:match("error") and " " or " "
         return " " .. icon .. count
       end,
-      -- NOTE: this will be called a lot so don't do any heavy processing here
       custom_filter = function(buf_number)
         -- filter out filetypes you don't want to see
         if vim.bo[buf_number].filetype ~= "<i-dont-want-to-see-this>" then
@@ -108,6 +107,6 @@ MAIN.configurations["bufferline"] = {
   }
 }
 
-MAIN.packer.append {
+MAIN.packer.register {
   ["akinsho/bufferline.nvim"] = MAIN.must_require("bufferline", "bufferline").packer_module
 }

@@ -39,6 +39,6 @@ MAIN.configurations["nvim-window"] = {
   }
 }
 
-MAIN.packer.append {
+MAIN.packer.register {
   ["https://gitlab.com/yorickpeterse/nvim-window.git"] = MAIN.must_require("nvim-window", "nvim-window").packer_module
 }

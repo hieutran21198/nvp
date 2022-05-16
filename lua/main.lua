@@ -208,7 +208,7 @@ MAIN.bootstrap = function(opts)
   end
 
   if bootstrap_options.reload == false then
-    MAIN.packer.provision()
+    MAIN.packer.bootstrap()
   end
   ---Load more modules
   require "modules.core"
@@ -232,19 +232,19 @@ MAIN.bootstrap = function(opts)
   end
 end
 
-MAIN.truthy = function()
-  for package_name, packer_module in pairs(MAIN.configurations) do
-    local ok, packaged = pcall(require, package_name)
-    if ok and packer_module.config == nil then
-      packer_module.config = function()
-        local c = MAIN.configurations[package_name]
-        if c.plugin_setup_params ~= nil then
-          packaged.setup(c.plugin_setup_params)
-        end
-        if c.key_mappings ~= nil then
-          MAIN.which_key.compile(c.key_mappings)
-        end
-      end
-    end
-  end
-end
+-- MAIN.truthy = function()
+--   for package_name, packer_module in pairs(MAIN.configurations) do
+--     local ok, packaged = pcall(require, package_name)
+--     if ok and packer_module.config == nil then
+--       packer_module.config = function()
+--         local c = MAIN.configurations[package_name]
+--         if c.plugin_setup_params ~= nil then
+--           packaged.setup(c.plugin_setup_params)
+--         end
+--         if c.key_mappings ~= nil then
+--           MAIN.which_key.compile(c.key_mappings)
+--         end
+--       end
+--     end
+--   end
+-- end

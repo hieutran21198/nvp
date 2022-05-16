@@ -23,6 +23,6 @@ MAIN.configurations["gitblame"] = {
   }
 }
 
-MAIN.packer.append {
+MAIN.packer.register {
   ["f-person/git-blame.nvim"] = MAIN.configurations["gitblame"].packer_module
 }

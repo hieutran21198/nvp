@@ -114,7 +114,7 @@ MAIN.configurations["telescope.project"] = {
   }
 }
 
-MAIN.packer.append {
+MAIN.packer.register {
   ["ahmedkhalf/project.nvim"] = MAIN.must_require("project_nvim", "telescope.project").packer_module,
   ["nvim-telescope/telescope.nvim"] = MAIN.must_require("telescope", "telescope").packer_module
 }

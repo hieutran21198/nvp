@@ -20,6 +20,6 @@ MAIN.configurations["todo"] = {
     end
   }
 }
-MAIN.packer.append {
+MAIN.packer.register {
   ["folke/todo-comments.nvim"] = MAIN.must_require("todo-comments", "todo").packer_module
 }

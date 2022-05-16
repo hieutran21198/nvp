@@ -1,36 +1,48 @@
 local M = {
-  plugins = {}
+  plugins = {},
+  origin = "https://github.com/wbthomason/packer.nvim"
 }
 
---- Append new plugins to the list of plugins
+--- register new plugins to the list of plugins
 ---@param plugins table
-M.append = function(plugins)
-  if type(plugins) == "table" then
-    for k, v in pairs(plugins) do
-      if type(k) == "number" and type(v) == "string" then
-        table.insert(M.plugins, v)
-      elseif type(k) == "string" and type(v) == "table" then
-        local plugin = {k}
-        for method, value in pairs(v) do
-          plugin[method] = value
-        end
-        table.insert(M.plugins, plugin)
+M.register = function(plugins)
+  for k, v in pairs(plugins) do
+    if type(k) == "number" and type(v) == "string" then
+      table.insert(M.plugins, v)
+    elseif type(k) == "string" and type(v) == "table" then
+      local plugin = {k}
+
+      for method, value in pairs(v) do
+        plugin[method] = value
       end
+
+      table.insert(M.plugins, plugin)
     end
   end
 end
 
-M.provision = function()
-  local gpacker = "https://github.com/wbthomason/packer.nvim"
-  if vim.fn.empty(vim.fn.glob(vim.env.HOME .. "/.local/share/nvim/site/pack/packer/start/packer.nvim")) > 0 then
-    local cmd = "!git clone " .. gpacker .. " ~/.local/share/nvim/site/pack/packer/start/packer.nvim"
+---@param install_dir string
+M.bootstrap = function(install_dir)
+  if not install_dir then
+    install_dir = vim.env.HOME .. "/.config/nvim/site/pack/packer/start/packer.nvim"
+
+  -- vim.opt.rtp:remove(join_paths(vim.call("stdpath", "data"), "site"))
+  -- vim.opt.rtp:remove(join_paths(vim.call("stdpath", "data"), "site", "after"))
+  -- vim.opt.rtp:prepend(join_paths(self.runtime_dir, "site"))
+  -- vim.opt.rtp:append(join_paths(self.runtime_dir, "site", "after"))
+  end
+
+  if vim.fn.empty(vim.fn.glob(install_dir)) > 0 then
+    local cmd = "!git clone " .. M.origin .. " " .. install_dir
     vim.api.nvim_command(cmd)
     vim.api.nvim_command("packadd packer.nvim")
   end
+
   local ok, packer = pcall(require, "packer")
   if not ok then
     return
   end
+
   local packer_utils = require "packer.util"
   packer.init {
     package_root = vim.env.HOME .. "/.local/share/nvim/site/pack",

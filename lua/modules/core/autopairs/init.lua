@@ -9,6 +9,6 @@ MAIN.configurations["autopairs"] = {
   }
 }
 
-MAIN.packer.append {
+MAIN.packer.register {
   ["windwp/nvim-autopairs"] = MAIN.must_require("nvim-autopairs", "autopairs").packer_module
 }
