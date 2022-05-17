@@ -24,7 +24,7 @@ end
 ---@param install_dir string
 M.bootstrap = function(install_dir)
   if not install_dir then
-    install_dir = vim.env.HOME .. "/.config/nvim/site/pack/packer/start/packer.nvim"
+    install_dir = vim.env.HOME .. "/.local/share/nvim/site/pack/packer/start/packer.nvim"
 
   -- vim.opt.rtp:remove(join_paths(vim.call("stdpath", "data"), "site"))
   -- vim.opt.rtp:remove(join_paths(vim.call("stdpath", "data"), "site", "after"))

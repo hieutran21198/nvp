@@ -1,3 +1,3 @@
-require "MAIN"
+require "main"
 
 MAIN.bootstrap({})
